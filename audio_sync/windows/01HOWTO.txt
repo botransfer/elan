@@ -1,0 +1,47 @@
+使い方
+
+1) Pythonをインストールする
+Anaconda3-2019.10-Windows-x86_64.exe
+C:\Anaconda3 にインストールしてください
+
+2) audio_sync.bat のショートカットをデスクトップなどに作る
+
+3) ショートカットに処理したいMP4 ファイルをまとめてドラッグ・ドロップする
+例：
+20200130-s46.MP4 20200130-s47.MP4 20200130-s48.MP4 ...
+
+4) 20200130-s46.eaf などができていることを確認する
+
+5) ELAN で生成されたファイルを起動したのち、音声の同期に問題が無いかを確認する。
+MP4ファイルの音声と、wavファイルの音声のボリュームを両方とも100 に設定し、対話が行われている部分で、音ずれが無いことを確認する。
+
+※追記
+書き起こしのeafファイルがある場合、
+audio_sync_annotation.bat を使うと同期したeafファイルに書き起こし内容を追加できる
+pip install pympi-lingが必要
+
+(i)既に書き起こし文章がある場合、
+audio_sync_annotation.bat に処理したいMP4 ファイルをまとめてドラッグ・ドロップする
+書き起こしのeafファイルと同期するMP4とwavファイルが同名で同一のフォルダにある必要がある
+
+(ii)書き起こし文章がない場合、
+audio_sync.bat とほぼ同じ動作をする
+
+(iii)同期に失敗したであろうファイルは
+sync_miss_files.txt
+sync_doubt_files.txt
+で保存される。（同期した時間を軸に判別しているので漏れの可能性あり）
+
+(iv)同期に失敗したファイルは手動で同期させて、ファイル名を"(元ファイル名)_manual.eaf"としたeafファイルを作成し、
+audio_manual_sync_annotation.bat
+にMP4を読み込ませれば書き起こしのeafにマージできる。
+
+実行するのに必要なファイルは以下
+audio_manual_sync_annotation.bat
+audio_sync_annotation.bat
+DetectMarker.py
+gen_elan_manual_sync.py
+gen_elan_merge.py
+gen_elan_sync.py
+marker.wav
+template_older_panel.eaf
