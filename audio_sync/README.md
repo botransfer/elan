@@ -42,7 +42,7 @@ For `gen_synced_eaf.py`, you may want to name the extracted audio file as `XXX_m
 ### gen_marker.py
 
 Generate syncrhonization signal as a wave file, using specified DTMF sound sequence.
-```
+```sh
 > python gen_marker.py -h
 usage: gen_marker.py [-h] [-freq FREQ] [-dur DUR] [-pat PAT]
 
@@ -60,7 +60,7 @@ By running the script without arguments, 'marker_1738.wav' is generated.
 
 Detect marker sound position in audio recording.  
 ***Note***: if input wave file has multiple channels, only ch2 will be used to detect the marker pattern.
-```
+```sh
 > python detect_marker.py -h
 usage: detect_marker.py [-h] marker infiles [infiles ...]
 
@@ -75,7 +75,7 @@ optional arguments:
 ```
 
 Example:
-```
+```sh
 > python gen_marker.py (-> marker_1738.wav)
 > python gen_marker.py -seq 001738000 (-> marker_001738000.wav)
 > python gen_marker.py -seq 000173800 (-> marker_000173800.wav)
@@ -84,7 +84,6 @@ Example:
 > python detect_marker.py marker_1738.wav marker_001738000.wav \
 marker_000173800.wav marker_000017380.wav
 
---> output
 marker_001738000.wav: marker found at: 1.013 sec
 marker_000173800.wav: marker found at: 1.512 sec
   diff: 0.499 sec
@@ -97,7 +96,7 @@ marker_000017380.wav: marker found at: 2.011 sec
 Generate syncrhonized ELAN file (eaf) that referes to multiple media files.  
 ***Note***: if input file ends with '_mp4.wav', MEDIA_URL is made as '.mp4'  
 Requires: [pympi](https://github.com/dopefishh/pympi).
-```
+```sh
 > python gen_synced_eaf.py -h
 usage: gen_synced_eaf.py [-h] [-marker MARKER] [-dur DUR] [-out OUT]
                          infiles [infiles ...]
@@ -123,9 +122,9 @@ Example:
 
 <ANNOTATION_DOCUMENT AUTHOR="pympi" DATE="2022-09-27T22:13:26+09:00" VERSION="2.8" FORMAT="2.8" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.mpi.nl/tools/elan/EAFv2.8.xsd">
         <HEADER>
-                <MEDIA_DESCRIPTOR MEDIA_URL="marker_000017380.wav" MIME_TYPE="audio/wav" TIME_ORIGIN="998" />
+                <MEDIA_DESCRIPTOR MEDIA_URL="marker_001738000.mp4" MIME_TYPE="video/mp4" />
                 <MEDIA_DESCRIPTOR MEDIA_URL="marker_000173800.wav" MIME_TYPE="audio/wav" TIME_ORIGIN="499" />
-                <MEDIA_DESCRIPTOR MEDIA_URL="./marker_001738000.mp4" MIME_TYPE="video/mp4" />
+                <MEDIA_DESCRIPTOR MEDIA_URL="marker_000017380.wav" MIME_TYPE="audio/wav" TIME_ORIGIN="998" />
                 <PROPERTY NAME="lastUsedAnnotation">0</PROPERTY>
                 </HEADER>
         <TIME_ORDER />
@@ -142,7 +141,7 @@ Example:
 
 Python module for detecting marker pattern. Can also be used to plot result likelihood.
 
-```
+```sh
 > python DetectMarker.py marker_1738.wav marker_000017380.wav
 ```
 ![](likelihood.png)

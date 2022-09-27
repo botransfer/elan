@@ -27,7 +27,6 @@ d.set_marker(marker)
 
 # detect marker position
 delays = []
-infiles.reverse()
 for infile in infiles:
     delay, _, _ = d.detect(infile)
     delays.append([infile, delay])
