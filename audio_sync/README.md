@@ -121,32 +121,20 @@ Example:
 > python gen_synced_eaf.py marker_001738000_mp4.wav \
     marker_000173800.wav marker_000017380.wav
 
-<ANNOTATION_DOCUMENT AUTHOR="pympi" DATE="2022-09-27T22:13:26+09:00" VERSION="2.
-8" FORMAT="2.8" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noName
-spaceSchemaLocation="http://www.mpi.nl/tools/elan/EAFv2.8.xsd">
+<ANNOTATION_DOCUMENT AUTHOR="pympi" DATE="2022-09-27T22:13:26+09:00" VERSION="2.8" FORMAT="2.8" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.mpi.nl/tools/elan/EAFv2.8.xsd">
         <HEADER>
-                <MEDIA_DESCRIPTOR MEDIA_URL="marker_000017380.wav" MIME_TYPE="au
-dio/wav" TIME_ORIGIN="998" />
-                <MEDIA_DESCRIPTOR MEDIA_URL="marker_000173800.wav" MIME_TYPE="au
-dio/wav" TIME_ORIGIN="499" />
-                <MEDIA_DESCRIPTOR MEDIA_URL="./marker_001738000.mp4" MIME_TYPE="
-video/mp4" />
+                <MEDIA_DESCRIPTOR MEDIA_URL="marker_000017380.wav" MIME_TYPE="audio/wav" TIME_ORIGIN="998" />
+                <MEDIA_DESCRIPTOR MEDIA_URL="marker_000173800.wav" MIME_TYPE="audio/wav" TIME_ORIGIN="499" />
+                <MEDIA_DESCRIPTOR MEDIA_URL="./marker_001738000.mp4" MIME_TYPE="video/mp4" />
                 <PROPERTY NAME="lastUsedAnnotation">0</PROPERTY>
                 </HEADER>
         <TIME_ORDER />
         <TIER TIER_ID="default" LINGUISTIC_TYPE_REF="default-lt" />
-        <LINGUISTIC_TYPE LINGUISTIC_TYPE_ID="default-lt" TIME_ALIGNABLE="true" G
-RAPHIC_REFERENCES="false" />
-        <CONSTRAINT STEREOTYPE="Time_Subdivision" DESCRIPTION="Time subdivision
-of parent annotation's time interval, no time gaps allowed within this interval"
- />
-        <CONSTRAINT STEREOTYPE="Symbolic_Subdivision" DESCRIPTION="Symbolic subd
-ivision of a parent annotation. Annotations refering to the same parent are orde
-red" />
-        <CONSTRAINT STEREOTYPE="Symbolic_Association" DESCRIPTION="1-1 associati
-on with a parent annotation" />
-        <CONSTRAINT STEREOTYPE="Included_In" DESCRIPTION="Time alignable annotat
-ions within the parent annotation's time interval, gaps are allowed" />
+        <LINGUISTIC_TYPE LINGUISTIC_TYPE_ID="default-lt" TIME_ALIGNABLE="true" GRAPHIC_REFERENCES="false" />
+        <CONSTRAINT STEREOTYPE="Time_Subdivision" DESCRIPTION="Time subdivision of parent annotation's time interval, no time gaps allowed within this interval" />
+        <CONSTRAINT STEREOTYPE="Symbolic_Subdivision" DESCRIPTION="Symbolic subdivision of a parent annotation. Annotations refering to the same parent are ordered" />
+        <CONSTRAINT STEREOTYPE="Symbolic_Association" DESCRIPTION="1-1 association with a parent annotation" />
+        <CONSTRAINT STEREOTYPE="Included_In" DESCRIPTION="Time alignable annotations within the parent annotation's time interval, gaps are allowed" />
         </ANNOTATION_DOCUMENT>
 ```
 
