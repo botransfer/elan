@@ -73,26 +73,24 @@ class DetectMarker:
 
 
 if __name__ == '__main__':
-    import sys
+    import argparse
     import matplotlib.pyplot as plt
 
-    args = sys.argv
-    args.pop(0)
-    if len(args) < 1:
-        msg = "usage: %s [<duration>] <wav>" % args[0]
-        raise SystemExit(msg)
+    parser = argparse.ArgumentParser(description='plot likelihood',
+                                     formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument('marker')
+    parser.add_argument('infile')
+    parser.add_argument('-dur', default=0,
+                        help='duration to check marker pattern (seconds). Specify 0 to check the whole file')
+    args = parser.parse_args()
 
     # check whole audio
-    duration = 0
-    if len(args) > 1:
-        duration = int(args.pop(0))
+    d = DetectMarker(n_secs=args.dur)
+    d.set_marker(args.marker)
 
-    d = DetectMarker(n_secs=duration)
-    d.set_marker()
-
-    filename = args.pop(0)
-    delay, t, res = d.detect(filename)
-    print("%s: marker found at: %.3f sec" % (filename, delay))
+    infile = args.infile
+    delay, t, res = d.detect(infile)
+    print("%s: marker found at: %.3f sec" % (infile, delay))
 
     t_ = t[:len(res)]
     plt.plot(t_, res)

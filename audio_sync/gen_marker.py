@@ -1,13 +1,28 @@
+import argparse
 import numpy as np
 from scipy.io import wavfile
 
-filename = 'marker.wav'
-fs = 44100
+parser = argparse.ArgumentParser(description='generate marker wave file',
+                                 formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+parser.add_argument('-freq', default=44100, type=int,
+                    help='sampling frequency')
+parser.add_argument('-dur', default=0.25, type=float,
+                    help='duration of single tone in seconds')
+tp = lambda x:list(map(int, [*x]))
+parser.add_argument('-seq', default='1738', type=tp,
+                    help='DTMF sound sequence to use as marker (0-9 only)')
+args = parser.parse_args()
+
+fs = args.freq
+dur_marker = args.dur
+sequence = args.seq
+outfile = 'marker_%s.wav' % ''.join(map(str, sequence))
 
 user_freq = [697, 770, 852, 941,
              1209, 1336, 1477, 1633]
 
 user_tones = {
+    '0': (user_freq[3], user_freq[5]),
     '1': (user_freq[0], user_freq[4]),
     '2': (user_freq[0], user_freq[5]),
     '3': (user_freq[0], user_freq[6]),
@@ -18,9 +33,6 @@ user_tones = {
     '8': (user_freq[2], user_freq[5]),
     '9': (user_freq[2], user_freq[6]),
 }
-
-# marker tone
-dur_marker = 0.25
 
 def gen_freq(freq, tones, num):
     tone = tones[str(num)]
@@ -42,17 +54,22 @@ def gen_sig(dur, f1, f2, fs):
     fade(signal, fs)
     return signal
 
-numbers = [1,7,3,8]
-signal=[]
+signals = []
 
-for i in range(len(numbers)):
-    f1, f2 = gen_freq(user_freq, user_tones, numbers[i])
-    signal_temp = gen_sig(dur_marker, f1, f2, fs)
-    signal.append(signal_temp)
+for pat in sequence:
+    f1, f2 = gen_freq(user_freq, user_tones, pat)
+    signal = gen_sig(dur_marker, f1, f2, fs)
+    signals.append(signal)
 
-signal_blank = np.zeros_like(signal[0])
-signal = np.concatenate([signal[0], signal_blank, signal[1], signal_blank, signal[2], signal_blank, signal[3]])
+signal_blank = np.zeros_like(signals[0])
+signals_w_blank = [signal_blank] * (len(signals) * 2 - 1)
+signals_w_blank[0::2] = signals
+signal_all = np.concatenate(signals_w_blank)
 
-signal *= 15000
-signal = np.int16(signal)
-wavfile.write(filename, fs, signal)
+#signal_all *= 15000
+signal_all /= np.max(np.abs(signal_all))
+s16int_max = 2 ** 15 - 1
+signal_all *= s16int_max
+signal_all = np.int16(signal_all)
+
+wavfile.write(outfile, fs, signal_all)
