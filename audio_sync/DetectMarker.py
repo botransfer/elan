@@ -34,12 +34,19 @@ class DetectMarker:
         if self.fs_marker != fs:
             msg = "sampling rate mismatch %d / %d: %s"
             raise SystemExit(msg % (self.fs_marker, fs, filename))
+
+        t_offset = 0
         if self.n_secs > 0:
             x = x[:fs * self.n_secs]
+        elif self.n_secs < 0:
+            len_cut = fs * self.n_secs
+            t_offset = (len(x) + len_cut) / fs
+            x = x[len_cut:]
         f, t, data = self.get_spectrogram(x, fs)
 
         res = signal.convolve(self.marker, data, mode='valid')[0]
         i_max = np.argmax(res)
+        t += t_offset
         delay = t[i_max]
         return delay, t, res
 
@@ -80,7 +87,7 @@ if __name__ == '__main__':
                                      formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('marker')
     parser.add_argument('infile')
-    parser.add_argument('-dur', default=0,
+    parser.add_argument('-dur', default=0, type=int,
                         help='duration to check marker pattern (seconds). Specify 0 to check the whole file')
     args = parser.parse_args()
 

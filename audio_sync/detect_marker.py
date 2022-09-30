@@ -1,13 +1,22 @@
 import argparse
+import textwrap
 from DetectMarker import DetectMarker
 
 parser = argparse.ArgumentParser(description='detect marker wave pattern',
                                  formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 parser.add_argument('marker')
 parser.add_argument('infiles', nargs='+')
+parser.add_argument('-dur',
+                    default=60,
+                    type=int,
+                    help='''\
+duration to check marker pattern (in seconds).
+x > 0: check first x seconds of target file.
+x == 0: check the whole file.
+x < 0: check last x seconds of target file.''')
 args = parser.parse_args()
 
-d = DetectMarker()
+d = DetectMarker(n_secs=args.dur)
 d.set_marker(args.marker)
 
 delays = []

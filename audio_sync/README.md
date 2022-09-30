@@ -11,18 +11,18 @@
 ## When to use
 You are recording some session (interview or something) using multiple recording devices such as an audio recorder and a video camera. Later, you want to synchronize both recodings. 
 
-Traditional way to do this is to use a clapperboard, and manually synchronize recorded tracks by looking at the waveforms. Or to use some professional recording equipment that can record some synchronization signal or timecodes. The purpose of these scripts is for a poor-man's method that allows you to automatically synchronize recordings using cheap devices.
+Traditional way to do this is to use a clapperboard and manually synchronize recorded tracks by looking at the waveforms or by carefully listening to them. Some professional recording equipment allow you to record synchronization signals or timecodes, which you can use for syncrhonization. The purpose of these scripts is to offer a poor-man's method to automatically synchronize recordings using cheap devices.
 
 ## How to use
 1. Genearate a 'marker' wave sound file by `gen_marker.py`
-1. After you start recording, playback the marker file (I do this with my smartphone)
+1. After you start recording, playback the marker file (I do this with my smartphone) so that the marker sound is recorded by all the equipment
 1. Start your session to be recorded
 1. After recording, parse the audio tracks with `detect_marker.py`  
    or  
    Generate syncrhonized ELAN file (eaf) with `gen_synced_eaf.py`
 
-If one (or more) of the recordings to be synchronized is a video clip, use [ffmpeg](https://ffmpeg.org/) or something similar to extract audio track(s) in wave format as following:
-```sh
+If some of the recordings to be synchronized are video clips, use [ffmpeg](https://ffmpeg.org/) or something similar to extract audio track(s) in wave format as following:
+```
 # simple conversion
 > ffmpeg -i in.mp4 out.wav
 
@@ -35,16 +35,17 @@ If one (or more) of the recordings to be synchronized is a video clip, use [ffmp
 # only right channel (ch2), sampling frequency 16kHz. replace 'FR' as 'FL' if you need ch1.
 > ffmpeg -i in.mp4 -ac 1 -ar 16000 -acodec pcm_s16le -af "pan=mono|FC=FR" -f wav out.wav
 ```
-For `gen_synced_eaf.py`, you may want to name the extracted audio file as `XXX_mp4.wav` (see below).
+***Note***: For `gen_synced_eaf.py`, you may want to name the extracted audio file as `XXX_mp4.wav` (see below).  
+***Note***: All audio files needs to be in wave format of same sampling frequency.
 
 ## Usages
 
 ### gen_marker.py
 
-Generate syncrhonization signal as a wave file, using specified DTMF sound sequence.
-```sh
+Generate syncrhonization signal as a wave file of specified DTMF sound sequence.
+```
 > python gen_marker.py -h
-usage: gen_marker.py [-h] [-freq FREQ] [-dur DUR] [-pat PAT]
+usage: gen_marker.py [-h] [-freq FREQ] [-dur DUR] [-seq SEQ]
 
 generate marker wave file
 
@@ -52,15 +53,17 @@ optional arguments:
   -h, --help  show this help message and exit
   -freq FREQ  sampling frequency (default: 44100)
   -dur DUR    duration of single tone in seconds (default: 0.25)
-  -seq SEQ    DTMF sound sequence to use as marker (default: 1738)
+  -seq SEQ    DTMF sound sequence to use as marker (0-9 only) (default: 1738)
 ```
 By running the script without arguments, 'marker_1738.wav' is generated.
+
+---
 
 ### detect_marker.py
 
 Detect marker sound position in audio recording.  
 ***Note***: if input wave file has multiple channels, only ch2 will be used to detect the marker pattern.
-```sh
+```
 > python detect_marker.py -h
 usage: detect_marker.py [-h] marker infiles [infiles ...]
 
@@ -75,7 +78,7 @@ optional arguments:
 ```
 
 Example:
-```sh
+```
 > python gen_marker.py (-> marker_1738.wav)
 > python gen_marker.py -seq 001738000 (-> marker_001738000.wav)
 > python gen_marker.py -seq 000173800 (-> marker_000173800.wav)
@@ -91,12 +94,14 @@ marker_000017380.wav: marker found at: 2.011 sec
   diff: 0.998 sec
 ```
 
+---
+
 ### gen_synced_eaf.py
 
 Generate syncrhonized ELAN file (eaf) that referes to multiple media files.  
 ***Note***: if input file ends with '_mp4.wav', MEDIA_URL is made as '.mp4'  
 Requires: [pympi](https://github.com/dopefishh/pympi).
-```sh
+```
 > python gen_synced_eaf.py -h
 usage: gen_synced_eaf.py [-h] [-marker MARKER] [-dur DUR] [-out OUT]
                          infiles [infiles ...]
@@ -137,11 +142,13 @@ Example:
         </ANNOTATION_DOCUMENT>
 ```
 
+---
+
 ### DetectMarker.py
 
 Python module for detecting marker pattern. Can also be used to plot result likelihood.
 
-```sh
+```
 > python DetectMarker.py marker_1738.wav marker_000017380.wav
 ```
 ![](likelihood.png)
