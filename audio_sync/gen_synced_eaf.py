@@ -9,12 +9,18 @@ parser = argparse.ArgumentParser(description='generate synchronized ELAN file',
                                  formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 parser.add_argument('-marker', default='marker.wav',
                     help='marker filename')
-parser.add_argument('-dur', default=60 * 5,
-                    help='duration to check marker pattern (seconds). Specify 0 to check the whole file')
+parser.add_argument('-dur',
+                    default=60 * 5,
+                    type=int,
+                    help='''\
+duration to check marker pattern (in seconds).
+x > 0: check first x seconds of target file.
+x == 0: check the whole file.
+x < 0: check last x seconds of target file.''')
 parser.add_argument('infiles', nargs='+',
                     help='audio files to synchronize')
 parser.add_argument('-out', default='-',
-                    help='resulting eaf filename. Specify "-" for stdout')
+                    help='output eaf filename. Specify "-" for stdout')
 args = parser.parse_args()
 
 marker = args.marker

@@ -4,8 +4,8 @@ from DetectMarker import DetectMarker
 
 parser = argparse.ArgumentParser(description='detect marker wave pattern',
                                  formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-parser.add_argument('marker')
-parser.add_argument('infiles', nargs='+')
+parser.add_argument('marker', help='marker wavefile')
+parser.add_argument('infiles', nargs='+', help='wavefile(s) to detect marker')
 parser.add_argument('-dur',
                     default=60,
                     type=int,

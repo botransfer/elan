@@ -65,16 +65,19 @@ Detect marker sound position in audio recording.
 ***Note***: if input wave file has multiple channels, only ch2 will be used to detect the marker pattern.
 ```
 > python detect_marker.py -h
-usage: detect_marker.py [-h] marker infiles [infiles ...]
+usage: detect_marker.py [-h] [-dur DUR] marker infiles [infiles ...]
 
 detect marker wave pattern
 
 positional arguments:
-  marker
-  infiles
+  marker      marker wavefile
+  infiles     wavefile(s) to detect marker
 
 optional arguments:
   -h, --help  show this help message and exit
+  -dur DUR    duration to check marker pattern (in seconds). x > 0: check
+              first x seconds of target file. x == 0: check the whole file. x
+              < 0: check last x seconds of target file. (default: 60)
 ```
 
 Example:
@@ -114,9 +117,11 @@ positional arguments:
 optional arguments:
   -h, --help      show this help message and exit
   -marker MARKER  marker filename (default: marker.wav)
-  -dur DUR        duration to check marker pattern (seconds). Specify 0 to
-                  check the whole file (default: 300)
-  -out OUT        resulting eaf filename. Specify "-" for stdout (default: -)
+  -dur DUR        duration to check marker pattern (in seconds). x > 0: check
+                  first x seconds of target file. x == 0: check the whole
+                  file. x < 0: check last x seconds of target file. (default:
+                  300)
+  -out OUT        output eaf filename. Specify "-" for stdout (default: -)
 ```
 
 Example:
@@ -149,6 +154,21 @@ Example:
 Python module for detecting marker pattern. Can also be used to plot result likelihood.
 
 ```
+> python DetectMarker.py -h
+usage: DetectMarker.py [-h] [-dur DUR] marker infile
+
+detect marker and plot likelihood
+
+positional arguments:
+  marker      marker wavefile
+  infile      wavefile(s) to detect marker
+
+optional arguments:
+  -h, --help  show this help message and exit
+  -dur DUR    duration to check marker pattern (in seconds). x > 0: check
+              first x seconds of target file. x == 0: check the whole file. x
+              < 0: check last x seconds of target file. (default: 0)
+
 > python DetectMarker.py marker_1738.wav marker_000017380.wav
 ```
 ![](likelihood.png)
