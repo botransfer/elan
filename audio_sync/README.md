@@ -1,5 +1,6 @@
 # Synchronize multiple audio tracks using a "marker" signal <!-- omit in toc --> 
 
+- [Summary](#summary)
 - [When to use](#when-to-use)
 - [How to use](#how-to-use)
 - [Usages](#usages)
@@ -7,6 +8,14 @@
   - [detect_marker.py](#detect_markerpy)
   - [gen_synced_eaf.py](#gen_synced_eafpy)
   - [DetectMarker.py](#detectmarkerpy)
+
+## Summary
+
+Generate ELAN file for xxx.mp4 and xxx.wav in sync
+```
+> ffmpeg -i xxx.mp4 xxx_mp4.wav
+> python gen_synced_eaf.py xxx_mp4.wav xxx.wav > xxx.eaf
+```
 
 ## When to use
 You are recording some session (interview or something) using multiple recording devices such as an audio recorder and a video camera. Later, you want to synchronize both recodings. 
